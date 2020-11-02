@@ -3,6 +3,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using LT.DigitalOffice.Mobile.Services;
 using LT.DigitalOffice.Mobile.Views;
+using Xamarin.Essentials;
+using LT.DigitalOffice.Mobile.Models.ResponsesModels;
 
 namespace LT.DigitalOffice.Mobile
 {
@@ -17,8 +19,12 @@ namespace LT.DigitalOffice.Mobile
             MainPage = new AppShell();
         }
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
+            if (!Preferences.ContainsKey(nameof(UserData.Token)))
+            {
+                await Shell.Current.GoToAsync("//LoginPage");
+            }
         }
 
         protected override void OnSleep()

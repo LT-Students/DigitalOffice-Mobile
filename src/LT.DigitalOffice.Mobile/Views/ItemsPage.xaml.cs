@@ -1,15 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LT.DigitalOffice.Mobile.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using LT.DigitalOffice.Mobile.Models;
-using LT.DigitalOffice.Mobile.Views;
-using LT.DigitalOffice.Mobile.ViewModels;
 
 namespace LT.DigitalOffice.Mobile.Views
 {

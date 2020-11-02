@@ -37,7 +37,9 @@ namespace LT.DigitalOffice.Mobile.ViewModels
             try
             {
                 Items.Clear();
+
                 var items = await DataStore.GetItemsAsync(true);
+
                 foreach (var item in items)
                 {
                     Items.Add(item);

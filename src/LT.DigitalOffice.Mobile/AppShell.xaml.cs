@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using LT.DigitalOffice.Mobile.Models.ResponsesModels;
 using LT.DigitalOffice.Mobile.ViewModels;
 using LT.DigitalOffice.Mobile.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace LT.DigitalOffice.Mobile
@@ -17,6 +19,9 @@ namespace LT.DigitalOffice.Mobile
 
         private async void OnMenuItemClicked(object sender, EventArgs e)
         {
+            Preferences.Remove(nameof(UserData.Token));
+            Preferences.Remove(nameof(UserData.UserId));
+
             await Shell.Current.GoToAsync("//LoginPage");
         }
     }
