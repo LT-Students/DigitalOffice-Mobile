@@ -59,7 +59,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         }
 
 
-        protected void OnCheckBoxChangedSaveLoginData(object sender, CheckedChangedEventArgs eventArgs)
+        public void OnCheckBoxChangedSaveLoginData(object sender, CheckedChangedEventArgs eventArgs)
         {
             _isAutoLogin = eventArgs.Value;
         }

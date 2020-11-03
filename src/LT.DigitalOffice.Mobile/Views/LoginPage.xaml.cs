@@ -17,11 +17,5 @@ namespace LT.DigitalOffice.Mobile.Views
             InitializeComponent();
             BindingContext = new LoginViewModel(this);
         }
-
-        protected void OnCheckBoxChangedSaveLoginData(object sender, CheckedChangedEventArgs eventArgs)
-        {
-            LoginViewModel a = (LoginViewModel)BindingContext;
-            a._isAutoLogin = eventArgs.Value;
-        }
     }
 }
