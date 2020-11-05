@@ -16,7 +16,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         private string _userLoginData;
         private string _userPassword;
 
-        public bool _isAutoLogin;
+        public bool isAutoLogin;
 
         public string LoginData
         {
@@ -46,22 +46,16 @@ namespace LT.DigitalOffice.Mobile.ViewModels
 
         private void SaveUserLoginData()
         {
-            if (_isAutoLogin)
+            if (isAutoLogin)
             {
-                Preferences.Set(nameof(_isAutoLogin), _isAutoLogin);
+                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
                 Preferences.Set(nameof(_userLoginData), _userLoginData);
                 Preferences.Set(nameof(_userPassword), _userPassword);
             }
             else
             {
-                Preferences.Set(nameof(_isAutoLogin), _isAutoLogin);
+                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
             }
-        }
-
-
-        public void OnCheckBoxChangedSaveLoginData(object sender, CheckedChangedEventArgs eventArgs)
-        {
-            _isAutoLogin = eventArgs.Value;
         }
     }
 }
