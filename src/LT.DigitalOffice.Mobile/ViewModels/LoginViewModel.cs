@@ -62,7 +62,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
 
         private async Task<HttpResponseMessage> SendUserCredentialsToAuthService()
         {
-            string loginUri = "http://172.24.208.1:9818/api/authentication/login";
+            string loginUri = "http://10.0.2.2:9818/api/authentication/login";
 
             HttpClient client = new HttpClient();
 
