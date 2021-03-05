@@ -8,7 +8,24 @@
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
         <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
+            <Entry Text="{Binding LoginData}"
+                   Placeholder="Enter login or email"
+                   ClearButtonVisibility="WhileEditing"/>
+            <Entry Text="{Binding Password}"
+                   Placeholder="Enter password"
+                   IsPassword="True" Margin="0,0,0,50"
+                   ClearButtonVisibility="WhileEditing"/>
             <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+            <FlexLayout JustifyContent="Center" AlignItems="Center" Margin="0,20,0,0">
+                <CheckBox IsChecked="false"
+                      Color="MediumBlue"
+                      HorizontalOptions="Center"
+                      VerticalOptions="CenterAndExpand"
+                      CheckedChanged="OnCheckBoxChangedSaveLoginData"/>
+                <Label Text="Save login information"
+                      FontSize="Medium"
+                      FontAttributes="Bold"/>
+            </FlexLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
