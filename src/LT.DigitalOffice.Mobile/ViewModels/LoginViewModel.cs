@@ -1,15 +1,13 @@
-﻿using Android.OS;
-using LT.DigitalOffice.Mobile.Models.RequestsModels;
+﻿using LT.DigitalOffice.Mobile.Models.RequestsModels;
+using LT.DigitalOffice.Mobile.Models.ResponsesModels;
 using LT.DigitalOffice.Mobile.Views;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
-using LT.DigitalOffice.Mobile.Models.ResponsesModels;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Xamarin.Forms;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace LT.DigitalOffice.Mobile.ViewModels
 {
@@ -20,6 +18,8 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         private Page _page;
         private string _userLoginData;
         private string _userPassword;
+
+        private const string LOGIN_URL = "http://10.0.2.2:9818/api/authentication/login";
 
         public string LoginData
         {
@@ -56,17 +56,14 @@ namespace LT.DigitalOffice.Mobile.ViewModels
 
             SaveUserDataInRepository(userData);
 
-            // Prefixing with `//` switches to a different navigation stack instead of pushing to the active one
             await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
         }
 
         private async Task<HttpResponseMessage> SendUserCredentialsToAuthService()
         {
-            string loginUri = "http://10.0.2.2:9818/api/authentication/login";
-
             HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = await client.PostAsync(new Uri(loginUri), GetRequestContent());
+            HttpResponseMessage response = await client.PostAsync(new Uri(LOGIN_URL), GetRequestContent());
 
             return response;
         }
