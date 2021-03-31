@@ -26,7 +26,7 @@
                     Value="0, 46, 0, 0"/>
 
         </Style>
-    <Style TargetType="Label">
+    <Style TargetType="Label" Class="InputLoginData">
         <Setter Property="HorizontalOptions"
                 Value="Center"/>
         <Setter Property="HorizontalOptions"
@@ -51,23 +51,25 @@
 </ContentPage.Resources>
 <ContentPage.Content>
     <StackLayout Padding="20,0,20,0" VerticalOptions="Center">
-            <Label Text="Войти в Цифровой офис"/>
-            <Label Text="Логин" HorizontalOptions="Center" Margin="0, 0, 200, 0" FontSize="14" FontAttributes="None"/>
+            <Label Text="Войти в Цифровой офис" StyleClass="InputLoginData" />
+            <Label Text="Логин" StyleClass="InputLoginData" HorizontalOptions="Center" Margin="0, 0, 200, 0" FontSize="14" FontAttributes="None"/>
 
             <local:ExtendedEntry Text="{Binding LoginData}"/>
-            <Label Text="Пароль"  HorizontalOptions="Center" Margin="0, 16, 190, 0" FontSize="14" FontAttributes="None"/>
+            <Label Text="Пароль"  StyleClass="InputLoginData" HorizontalOptions="Center" Margin="0, 16, 190, 0" FontSize="14" FontAttributes="None"/>
             <local:ExtendedEntry Text="{Binding Password}"/>
+
+            <FlexLayout JustifyContent="Center" AlignItems="Center" Margin="0,20,0,0">
+                <CheckBox IsChecked="false"
+                      Color="MediumBlue"
+                      HorizontalOptions="Center"
+                      VerticalOptions="CenterAndExpand"
+                      CheckedChanged="OnCheckBoxChangedSaveLoginData"/>
+                <Label Text="Save login information"
+                      FontSize="Medium"
+                      FontAttributes="Bold"/>
+            </FlexLayout>
+
             <Button StyleClass="LoginButton" BackgroundColor="#FA7D57" Command="{Binding LoginCommand}" Text ="Войти"/>
     </StackLayout>
 </ContentPage.Content>
-            </FlexLayout>
-                      FontAttributes="Bold"/>
-                      FontSize="Medium"
-                <Label Text="Save login information"
-                      CheckedChanged="OnCheckBoxChangedSaveLoginData"/>
-                      VerticalOptions="CenterAndExpand"
-                      HorizontalOptions="Center"
-                <CheckBox IsChecked="false"
-                      Color="MediumBlue"
-            <FlexLayout JustifyContent="Center" AlignItems="Center" Margin="0,20,0,0">
 </ContentPage>

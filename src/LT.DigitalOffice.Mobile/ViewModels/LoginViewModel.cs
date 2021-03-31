@@ -16,6 +16,14 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         public Command LoginCommand { get; }
 
         public bool isAutoLogin;
+
+        private Page _page;
+        private string _userLoginData;
+        private string _userPassword;
+
+        private const string LOGIN_URL = "http://10.0.2.2:9818/api/auth/login";
+
+        public string LoginData
         {
             get => _userLoginData;
             set => SetProperty(ref _userLoginData, value);
@@ -35,8 +43,6 @@ namespace LT.DigitalOffice.Mobile.ViewModels
 
         private async void OnLoginClicked(object obj)
         {
-            SaveUserLoginData();
-
             HttpResponseMessage response = await SendUserCredentialsToAuthService();
 
             if (!response.IsSuccessStatusCode)
@@ -46,6 +52,8 @@ namespace LT.DigitalOffice.Mobile.ViewModels
                 return;
             }
 
+            SaveUserLoginData();
+
             string responseConvert = await response.Content.ReadAsStringAsync();
 
             UserData userData = JsonConvert.DeserializeObject<UserData>(responseConvert);
@@ -53,20 +61,6 @@ namespace LT.DigitalOffice.Mobile.ViewModels
             SaveUserDataInRepository(userData);
 
             await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
-        }
-
-        private void SaveUserLoginData()
-        {
-            if (isAutoLogin)
-            {
-                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
-                Preferences.Set(nameof(_userLoginData), _userLoginData);
-                Preferences.Set(nameof(_userPassword), _userPassword);
-            }
-            else
-            {
-                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
-            }
         }
 
         private async Task<HttpResponseMessage> SendUserCredentialsToAuthService()
@@ -95,6 +89,20 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         {
             Preferences.Set(nameof(userData.UserId), userData.UserId.ToString());
             Preferences.Set(nameof(userData.Token), userData.Token);
+        }
+
+        private void SaveUserLoginData()
+        {
+            if (isAutoLogin)
+            {
+                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
+                Preferences.Set(nameof(_userLoginData), _userLoginData);
+                Preferences.Set(nameof(_userPassword), _userPassword);
+            }
+            else
+            {
+                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
+            }
         }
     }
 }
