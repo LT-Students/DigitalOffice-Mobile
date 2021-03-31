@@ -1,14 +1,12 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using LT.DigitalOffice.Mobile.Models.ResponsesModels;
 using LT.DigitalOffice.Mobile.Services;
-using LT.DigitalOffice.Mobile.Views;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace LT.DigitalOffice.Mobile
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();
@@ -17,8 +15,12 @@ namespace LT.DigitalOffice.Mobile
             MainPage = new AppShell();
         }
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
+            if (!Preferences.ContainsKey(nameof(UserData.Token)))
+            {
+                await Shell.Current.GoToAsync("//LoginPage");
+            }
         }
 
         protected override void OnSleep()

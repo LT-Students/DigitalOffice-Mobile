@@ -1,12 +1,10 @@
-﻿using System;
+﻿using LT.DigitalOffice.Mobile.Models;
+using LT.DigitalOffice.Mobile.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Xamarin.Forms;
-
-using LT.DigitalOffice.Mobile.Models;
-using LT.DigitalOffice.Mobile.Services;
 
 namespace LT.DigitalOffice.Mobile.ViewModels
 {
@@ -15,6 +13,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
         bool isBusy = false;
+
         public bool IsBusy
         {
             get { return isBusy; }
@@ -38,6 +37,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
             backingStore = value;
             onChanged?.Invoke();
             OnPropertyChanged(propertyName);
+
             return true;
         }
 
@@ -46,6 +46,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             var changed = PropertyChanged;
+
             if (changed == null)
                 return;
 

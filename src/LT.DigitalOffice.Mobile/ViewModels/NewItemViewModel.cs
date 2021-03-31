@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
-using LT.DigitalOffice.Mobile.Models;
+﻿using LT.DigitalOffice.Mobile.Models;
+using System;
 using Xamarin.Forms;
 
 namespace LT.DigitalOffice.Mobile.ViewModels
@@ -16,6 +13,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         {
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
+
             this.PropertyChanged +=
                 (_, __) => SaveCommand.ChangeCanExecute();
         }

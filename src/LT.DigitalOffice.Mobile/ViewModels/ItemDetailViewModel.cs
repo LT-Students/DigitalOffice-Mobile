@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using LT.DigitalOffice.Mobile.Models;
 using Xamarin.Forms;
 
 namespace LT.DigitalOffice.Mobile.ViewModels

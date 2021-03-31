@@ -1,12 +1,10 @@
-﻿using System;
+﻿using LT.DigitalOffice.Mobile.Models;
+using LT.DigitalOffice.Mobile.Views;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
-
-using LT.DigitalOffice.Mobile.Models;
-using LT.DigitalOffice.Mobile.Views;
 
 namespace LT.DigitalOffice.Mobile.ViewModels
 {
@@ -37,7 +35,9 @@ namespace LT.DigitalOffice.Mobile.ViewModels
             try
             {
                 Items.Clear();
+
                 var items = await DataStore.GetItemsAsync(true);
+
                 foreach (var item in items)
                 {
                     Items.Add(item);
