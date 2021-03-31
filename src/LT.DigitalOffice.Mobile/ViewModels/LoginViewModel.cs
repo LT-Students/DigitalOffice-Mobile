@@ -15,13 +15,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
     {
         public Command LoginCommand { get; }
 
-        private Page _page;
-        private string _userLoginData;
-        private string _userPassword;
-
-        private const string LOGIN_URL = "http://10.0.2.2:9818/api/authentication/login";
-
-        public string LoginData
+        public bool isAutoLogin;
         {
             get => _userLoginData;
             set => SetProperty(ref _userLoginData, value);
@@ -41,6 +35,8 @@ namespace LT.DigitalOffice.Mobile.ViewModels
 
         private async void OnLoginClicked(object obj)
         {
+            SaveUserLoginData();
+
             HttpResponseMessage response = await SendUserCredentialsToAuthService();
 
             if (!response.IsSuccessStatusCode)
@@ -57,6 +53,20 @@ namespace LT.DigitalOffice.Mobile.ViewModels
             SaveUserDataInRepository(userData);
 
             await Shell.Current.GoToAsync($"//{nameof(AboutPage)}");
+        }
+
+        private void SaveUserLoginData()
+        {
+            if (isAutoLogin)
+            {
+                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
+                Preferences.Set(nameof(_userLoginData), _userLoginData);
+                Preferences.Set(nameof(_userPassword), _userPassword);
+            }
+            else
+            {
+                Preferences.Set(nameof(isAutoLogin), isAutoLogin);
+            }
         }
 
         private async Task<HttpResponseMessage> SendUserCredentialsToAuthService()

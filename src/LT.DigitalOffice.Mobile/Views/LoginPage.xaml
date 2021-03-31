@@ -60,4 +60,14 @@
             <Button StyleClass="LoginButton" BackgroundColor="#FA7D57" Command="{Binding LoginCommand}" Text ="Войти"/>
     </StackLayout>
 </ContentPage.Content>
+            </FlexLayout>
+                      FontAttributes="Bold"/>
+                      FontSize="Medium"
+                <Label Text="Save login information"
+                      CheckedChanged="OnCheckBoxChangedSaveLoginData"/>
+                      VerticalOptions="CenterAndExpand"
+                      HorizontalOptions="Center"
+                <CheckBox IsChecked="false"
+                      Color="MediumBlue"
+            <FlexLayout JustifyContent="Center" AlignItems="Center" Margin="0,20,0,0">
 </ContentPage>
