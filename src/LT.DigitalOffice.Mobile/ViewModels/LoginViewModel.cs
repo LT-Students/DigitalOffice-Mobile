@@ -21,7 +21,7 @@ namespace LT.DigitalOffice.Mobile.ViewModels
         private string _userLoginData;
         private string _userPassword;
 
-        private const string LOGIN_URL = "http://10.0.2.2:9818/api/auth/login";
+        private const string LOGIN_URL = "https://178.154.210.148:9817/auth/login";
 
         public string LoginData
         {
@@ -65,7 +65,11 @@ namespace LT.DigitalOffice.Mobile.ViewModels
 
         private async Task<HttpResponseMessage> SendUserCredentialsToAuthService()
         {
-            HttpClient client = new HttpClient();
+            // TODO remove this when we will have normal certificate
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            HttpClient client = new HttpClient(handler);
 
             HttpResponseMessage response = await client.PostAsync(new Uri(LOGIN_URL), GetRequestContent());
 
