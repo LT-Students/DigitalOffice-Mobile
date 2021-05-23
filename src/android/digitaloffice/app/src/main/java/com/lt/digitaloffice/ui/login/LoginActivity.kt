@@ -1,31 +1,31 @@
 package com.lt.digitaloffice.ui.login
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.android.volley.AuthFailureError
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.lt.digitaloffice.R
+import com.lt.digitaloffice.ui.main.MainActivity
 import kotlinx.coroutines.*
-import org.json.JSONException
 import org.json.JSONObject
-import java.io.BufferedWriter
-import java.io.IOException
-import java.io.OutputStreamWriter
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection
 import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity(), CoroutineScope {
+    private var _userId: String? = null
+    private var _token: String? = null
+    private var _firstName: String? = null
+
     private lateinit var loginViewModel: LoginViewModel
 
     private var job: Job = Job()
@@ -41,10 +41,6 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
-
-        launch {
-            val result = httpPost()
-        }
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
                 .get(LoginViewModel::class.java)
@@ -105,7 +101,12 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                loginViewModel.login(username.text.toString(), password.text.toString())
+                login(username.text.toString(), password.text.toString())
+                getUserInfo(_userId, _token)
+
+                //val intent = Intent(this.context, MainActivity::class.java)
+                //startActivity(intent)
+                //loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
     }
@@ -125,31 +126,55 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    @Throws(IOException::class, JSONException::class)
-    private suspend fun httpPost(): String {
-        val result = withContext(Dispatchers.IO) {
-            val json = JSONObject()
-            json.accumulate("logindata", "admin")
-            json.accumulate("password", "%4fgT1_3ioR")
-
-            val authUrl = URL("https://auth.ltdo.xyz/auth/login")
-
-            val conn = authUrl.openConnection() as HttpsURLConnection
-            conn.requestMethod = "POST"
-            conn.setRequestProperty("Content-Type", "application/json; charset=utf-8")
-
-            val os = conn.outputStream
-            val writer = BufferedWriter(OutputStreamWriter(os, "UTF-8"))
-            writer.write(json.toString())
-            writer.flush()
-            writer.close()
-            os.close()
-
-            conn.connect()
-            conn.responseMessage
+    private fun login(loginData: String, password: String) {
+        val requestBody = with(JSONObject()) {
+            accumulate("loginData", loginData)
+            accumulate("password", password)
         }
+        val url = "https://auth.ltdo.xyz/auth/login"
+        val request = object : StringRequest(Method.POST, url, { response ->
+            val responseBody = JSONObject(response)
+            _userId = responseBody["userId"].toString()
+            _token = responseBody["token"].toString()
+        },
+        { error ->
+            Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+        })
+        {
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
 
-        return result
+            @Throws(AuthFailureError::class)
+            override fun getBody(): ByteArray {
+                return requestBody.toString().toByteArray()
+            }
+        }
+        val queue = Volley.newRequestQueue(this)
+        queue.add(request)
+    }
+
+    private fun getUserInfo(userId: String?, token: String?) {
+        val url = "https://user.ltdo.xyz/users/get?userId=$userId"
+        val request = object : StringRequest(Method.GET, url, { response ->
+                val responseBody = JSONObject(response)
+
+                _firstName = responseBody["user:firstName"].toString()
+        },
+        { error ->
+            Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+        })
+        {
+            override fun getHeaders(): MutableMap<String, String> {
+                if (token != null) {
+                    headers["token"] = token
+                }
+
+                return super.getHeaders()
+            }
+        }
+        val queue = Volley.newRequestQueue(this)
+        queue.add(request)
     }
 }
 
